@@ -60,7 +60,7 @@ After=network.target
 [Service]
 Type=simple
 User=$(whoami)
-WorkingDirectory=$APP_DIR/backend
+WorkingDirectory=$APP_DIR
 ExecStart=$APP_DIR/backend/venv/bin/python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000
 Restart=always
 RestartSec=5
