@@ -93,8 +93,18 @@ async def websocket_feed(ws: WebSocket):
         feed_manager.disconnect(ws)
 
 
-# ── SSE Feed（备选推送方案） ──
+# ── 状态端点（必须在静态文件挂载之前） ──
+@app.get("/api/status")
+def get_status():
+    return {
+        "status": "running",
+        "feed_clients": feed_manager.get_client_count(),
+        "trading_engine_running": trading_engine._running,
+        "active_strategies": len(trading_engine._active_strategies),
+    }
 
+
+# ── SSE Feed（备选推送方案） ──
 @app.get("/api/feed/sse")
 async def sse_feed(request: Request):
     """SSE推送端点"""
@@ -104,29 +114,17 @@ async def sse_feed(request: Request):
             if await request.is_disconnected():
                 client_connected = False
                 break
-            # SSE 心跳
             yield {"event": "heartbeat", "data": "ping"}
             await asyncio.sleep(15)
 
     return EventSourceResponse(event_generator())
 
 
-# ── 静态文件（前端构建产物） ──
+# ── 静态文件（前端构建产物）—— 必须最后加载 ──
 import os
 frontend_dist = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "dist")
 if os.path.exists(frontend_dist):
     app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
-
-
-# ── 状态端点 ──
-@app.get("/api/status")
-def get_status():
-    return {
-        "status": "running",
-        "feed_clients": feed_manager.get_client_count(),
-        "trading_engine_running": trading_engine._running,
-        "active_strategies": len(trading_engine._active_strategies),
-    }
 
 
 if __name__ == "__main__":
