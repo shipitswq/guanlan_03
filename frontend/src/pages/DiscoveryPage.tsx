@@ -12,8 +12,12 @@ export default function DiscoveryPage() {
   const [form] = Form.useForm()
   const [scanning, setScanning] = useState(false)
   const [scanProgress, setScanProgress] = useState({ total: 0, scanned: 0 })
-  const [results, setResults] = useState<any[]>([])
-  const [count, setCount] = useState(0)
+  const [results, setResults] = useState<any[]>(() => {
+    try { return JSON.parse(localStorage.getItem('discovery_results') || '[]') } catch { return [] }
+  })
+  const [count, setCount] = useState(() => {
+    try { return Number(localStorage.getItem('discovery_count') || '0') } catch { return 0 }
+  })
   const [klineModal, setKlineModal] = useState<any>(null)
   const [klineData, setKlineData] = useState<any[]>([])
   const [klineLoading, setKlineLoading] = useState(false)
@@ -52,6 +56,9 @@ export default function DiscoveryPage() {
       })
       setResults(res.results || [])
       setCount(res.count || 0)
+      localStorage.setItem('discovery_results', JSON.stringify(res.results || []))
+      localStorage.setItem('discovery_count', String(res.count || 0))
+      localStorage.setItem('discovery_time', new Date().toLocaleString())
       message.success(`扫描完成，发现 ${res.count || 0} 个买入信号`)
     } catch (e: any) {
       message.error(`扫描失败: ${e.message}`)
@@ -156,6 +163,7 @@ export default function DiscoveryPage() {
       <Card size="small" style={{ marginTop: 16 }}>
         <Text strong style={{ display: 'block', marginBottom: 4 }}>
           扫描结果 {count > 0 && <Tag>{count} 个信号</Tag>}
+          {(() => { const t = localStorage.getItem('discovery_time'); return t ? <Text type="secondary" style={{ fontSize: 12, fontWeight: 400, marginLeft: 8 }}>上次扫描: {t}</Text> : null })()}
         </Text>
         <Text type="secondary" style={{ fontSize: 12, display: 'block', marginBottom: 8 }}>
           评分 = 近5日涨幅%，越高代表近期上涨越强。点击标的名称或K线按钮可查看K线图。
