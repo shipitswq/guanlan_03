@@ -46,6 +46,15 @@ export default function KLineChart({
   stockName, onRangeSelect,
 }: Props) {
   const option = useMemo(() => {
+    try {
+      return buildOption()
+    } catch (e) {
+      console.error('K线图渲染失败:', e)
+      return {}
+    }
+  }, [klineData, trades, signals])
+
+  function buildOption() {
     if (!klineData || klineData.length === 0) return {}
 
     const dates = klineData.map(d => d.date)
@@ -361,7 +370,7 @@ export default function KLineChart({
         },
       ],
     }
-  }, [klineData, trades, signals])
+  }
 
   if (loading) {
     return (

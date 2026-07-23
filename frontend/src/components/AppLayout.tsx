@@ -2,10 +2,10 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Layout, Menu } from 'antd'
 import {
   DashboardOutlined,
-  ExperimentOutlined,
   BarChartOutlined,
   DollarOutlined,
   ApiOutlined,
+  CompassOutlined,
 } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 import { statusApi } from '../services/api'
@@ -16,6 +16,7 @@ const menuItems = [
   { key: '/dashboard', icon: <DashboardOutlined />, label: '仪表盘' },
   { key: '/backtest', icon: <BarChartOutlined />, label: '回测分析' },
   { key: '/trading', icon: <DollarOutlined />, label: '模拟交易' },
+  { key: '/discovery', icon: <CompassOutlined />, label: '发现机会' },
   { key: '/feed', icon: <ApiOutlined />, label: '实时Feed' },
 ]
 

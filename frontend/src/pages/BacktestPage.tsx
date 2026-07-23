@@ -1,6 +1,7 @@
 import { Card, Form, Select, InputNumber, Input, Button, Table, Typography, Row, Col, Spin, message, Tag, Tabs, DatePicker, Space, Popover } from 'antd'
 import { PlayCircleOutlined, HistoryOutlined, SearchOutlined, InfoCircleOutlined, DollarOutlined } from '@ant-design/icons'
 import { useEffect, useState, useCallback } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { backtestApi, dataApi, tradingApi } from '../services/api'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts'
 import KLineChart from '../components/KLineChart'
@@ -8,6 +9,7 @@ import KLineChart from '../components/KLineChart'
 const { Title, Text } = Typography
 
 export default function BacktestPage() {
+  const [searchParams] = useSearchParams()
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<any>(null)
@@ -30,6 +32,12 @@ export default function BacktestPage() {
       .then(r => r.json())
       .then(r => setBuiltin(r.strategies || []))
       .catch(() => {})
+    // 从 URL 参数自动填充标的（来自发现机会页面跳转）
+    const symbol = searchParams.get('symbol')
+    if (symbol) {
+      form.setFieldsValue({ symbol })
+      setTimeout(() => handleLoadKline(), 100)
+    }
   }, [])
 
   // ── 获取K线数据 ──

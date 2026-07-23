@@ -282,8 +282,12 @@ class CoolMAStrategy(BaseStrategy):
             if prev_close > 0:
                 gap_pct = (curr_open - prev_close) / prev_close * 100
                 if gap_pct <= -gap_exit:
-                    return Signal(SignalType.SELL, price,
-                                  f"跳空低开{gap_pct:.1f}% 风控平仓", date)
+                    # 低开在快线之上 → 忽略跳空风险
+                    if curr_open >= fc:
+                        pass
+                    else:
+                        return Signal(SignalType.SELL, price,
+                                      f"跳空低开{gap_pct:.1f}% 风控平仓", date)
 
         # 1. 死叉 → 平仓
         if fp >= sp and fc < sc:

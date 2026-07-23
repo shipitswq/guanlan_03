@@ -47,6 +47,12 @@ export const backtestApi = {
   detail: (id: number) => request<any>(`/backtest/history/${id}`),
 }
 
+// 发现机会
+export const screenerApi = {
+  scan: (data: any) =>
+    request<any>('/screener/scan', { method: 'POST', body: JSON.stringify(data) }),
+}
+
 // 模拟交易
 export const tradingApi = {
   register: (data: any) =>

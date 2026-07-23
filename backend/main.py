@@ -14,6 +14,7 @@ from backend.api.strategies import router as strategies_router
 from backend.api.backtest import router as backtest_router
 from backend.api.trading import router as trading_router, set_engine
 from backend.api.data import router as data_router
+from backend.api.screener import router as screener_router
 from backend.engine.feed import FeedManager
 from backend.engine.trading import SimTradingEngine
 
@@ -66,6 +67,7 @@ app.include_router(strategies_router)
 app.include_router(backtest_router)
 app.include_router(trading_router)
 app.include_router(data_router)
+app.include_router(screener_router)
 
 
 # ── WebSocket Feed ──
