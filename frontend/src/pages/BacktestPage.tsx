@@ -1,9 +1,9 @@
-import { Card, Form, Select, InputNumber, Input, Button, Table, Typography, Row, Col, Spin, message, Tag, Tabs, DatePicker, Space, Popover } from 'antd'
+import { Card, Form, Select, InputNumber, Input, Button, Table, Typography, Row, Col, Spin, message, Tag, Tabs, Space, Popover } from 'antd'
 import { PlayCircleOutlined, HistoryOutlined, SearchOutlined, InfoCircleOutlined, DollarOutlined } from '@ant-design/icons'
 import { useEffect, useState, useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { backtestApi, dataApi, tradingApi } from '../services/api'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts'
+import { Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area } from 'recharts'
 import KLineChart from '../components/KLineChart'
 
 const { Title, Text } = Typography
@@ -24,7 +24,7 @@ export default function BacktestPage() {
   const [stockName, setStockName] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
-  const [currentFreq, setCurrentFreq] = useState('daily')
+  const [_currentFreq, setCurrentFreq] = useState('daily')
 
   useEffect(() => {
     backtestApi.history().then(r => setHistory(r.results || []))
@@ -40,19 +40,7 @@ export default function BacktestPage() {
     }
   }, [])
 
-  // ── 获取K线数据 ──
-  const fetchKline = useCallback(async (symbol: string, count = 400) => {
-    setKlineLoading(true)
-    try {
-      const res = await dataApi.kline(symbol, 'daily', count)
-      if (res?.data) {
-        setKlineData(res.data)
-      }
-    } catch { }
-    setKlineLoading(false)
-  }, [])
-
-  // ── 单独加载K线数据（不回测） ──
+  // ── 获取K线数据（不回测，仅加载K线）──
   const handleLoadKline = async (freqOverride?: string) => {
     const symbol = form.getFieldValue('symbol')
     if (!symbol) { message.warning('请输入标的代码'); return }

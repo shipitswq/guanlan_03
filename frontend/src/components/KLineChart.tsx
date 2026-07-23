@@ -8,7 +8,7 @@
  *   ◯ 红色空心 = 买入信号(未成交，如资金不足)
  *   ◯ 绿色空心 = 卖出信号(未成交，如无持仓)
  */
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import ReactECharts from 'echarts-for-react'
 import { Card, Spin, Tag, Space } from 'antd'
 
