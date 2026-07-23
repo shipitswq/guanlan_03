@@ -5,9 +5,10 @@ import asyncio
 import json
 import logging
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from sse_starlette.sse import EventSourceResponse
 
 from backend.models.database import init_db, get_session
 from backend.api.strategies import router as strategies_router
@@ -93,8 +94,6 @@ async def websocket_feed(ws: WebSocket):
 
 
 # ── SSE Feed（备选推送方案） ──
-from sse_starlette.sse import EventSourceResponse
-from fastapi import Request
 
 @app.get("/api/feed/sse")
 async def sse_feed(request: Request):
