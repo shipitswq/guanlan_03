@@ -96,7 +96,7 @@ export default function Dashboard() {
         {/* 最近交易 */}
         <Col span={12}>
           <Card title="最近交易" size="small" bodyStyle={{ padding: 0 }}>
-            <Table dataSource={recentTrades} rowKey={(r, i) => String(i)}
+            <Table dataSource={recentTrades} rowKey={(_r, i) => String(i)}
               size="small" pagination={false}
               columns={[
                 { title: '时间', dataIndex: 'trade_time', key: 'tt', width: 130,

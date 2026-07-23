@@ -1,9 +1,9 @@
 import { Card, Form, Select, InputNumber, Input, Button, Table, Typography, Row, Col, Spin, message, Tag, Tabs, Space, Popover } from 'antd'
 import { PlayCircleOutlined, HistoryOutlined, SearchOutlined, InfoCircleOutlined, DollarOutlined } from '@ant-design/icons'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { backtestApi, dataApi, tradingApi } from '../services/api'
-import { Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area } from 'recharts'
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts'
 import KLineChart from '../components/KLineChart'
 
 const { Title, Text } = Typography
@@ -303,8 +303,6 @@ export default function BacktestPage() {
           stockName={btResult.stock_name || stockName}
           onRangeSelect={handleRangeSelect}
           height={420}
-          title="K线走势 · 买卖点标注"
-          height={420}
         />
 
         {/* 净值曲线 */}
@@ -373,7 +371,7 @@ export default function BacktestPage() {
                       />
                     </Form.Item>
                     <Button type="link" size="small" icon={<SearchOutlined />}
-                      onClick={handleLoadKline}
+                      onClick={() => handleLoadKline()}
                       style={{ marginBottom: 12, padding: 0, height: 20, fontSize: 12, color: '#87867f' }}>
                       先查看K线数据，确认无误再回测
                     </Button>

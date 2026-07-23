@@ -1,5 +1,5 @@
-import { Card, Table, Button, Modal, Form, Input, InputNumber, Tag, Space, Typography, message } from 'antd'
-import { PlusOutlined, EditOutlined, DeleteOutlined, ExperimentOutlined } from '@ant-design/icons'
+import { Card, Table, Button, Modal, Form, Input, Tag, Typography, message } from 'antd'
+import { PlusOutlined, DeleteOutlined, ExperimentOutlined } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 import { strategyApi } from '../services/api'
 
