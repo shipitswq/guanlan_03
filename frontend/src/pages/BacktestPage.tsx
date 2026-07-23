@@ -28,7 +28,7 @@ export default function BacktestPage() {
 
   useEffect(() => {
     backtestApi.history().then(r => setHistory(r.results || []))
-    fetch('http://localhost:8000/api/strategies/builtin')
+    fetch('/api/strategies/builtin')
       .then(r => r.json())
       .then(r => setBuiltin(r.strategies || []))
       .catch(() => {})

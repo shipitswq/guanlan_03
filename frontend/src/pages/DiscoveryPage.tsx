@@ -20,7 +20,7 @@ export default function DiscoveryPage() {
   const [builtinStrategies, setBuiltin] = useState<any[]>([])
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/strategies/builtin')
+    fetch('/api/strategies/builtin')
       .then(r => r.json()).then(r => setBuiltin(r.strategies || []))
       .catch(() => {})
     // 恢复上次扫描结果
@@ -46,7 +46,7 @@ export default function DiscoveryPage() {
     // 启动进度轮询
     const timer = setInterval(async () => {
       try {
-        const p = await (await fetch('http://localhost:8000/api/screener/progress')).json()
+        const p = await (await fetch('/api/screener/progress')).json()
         if (p.total > 0) setScanProgress({ total: p.total, scanned: p.scanned })
       } catch {}
     }, 500)

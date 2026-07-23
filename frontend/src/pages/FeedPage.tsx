@@ -10,7 +10,7 @@ interface FeedEvent {
   data: any
 }
 
-const WS_URL = 'ws://localhost:8000/ws/feed'
+const WS_URL = `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/ws/feed`
 
 export default function FeedPage() {
   const [connected, setConnected] = useState(false)
@@ -211,7 +211,7 @@ setInterval(() => {
           </Card>
 
           <Card title="客户端订阅指南" size="small">
-            <Alert type="info" showIcon message="WebSocket端点" description="ws://localhost:8000/ws/feed" style={{ marginBottom: 8 }} />
+            <Alert type="info" showIcon message="WebSocket端点" description={WS_URL} style={{ marginBottom: 8 }} />
             <pre style={{
               background: '#f6f8fa',
               padding: 8,
