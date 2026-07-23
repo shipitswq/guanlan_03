@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-# ============================================
-# 观澜量化系统 — 一键部署脚本 (Ubuntu/Debian)
+# 观澜量化系统 - 一键部署脚本 (Ubuntu/Debian)
 # 用法: chmod +x deploy.sh && ./deploy.sh
-# ============================================
 set -euo pipefail
 
 APP_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -10,47 +8,53 @@ APP_NAME="guanlan"
 PYTHON="${PYTHON:-python3}"
 
 echo "========================================"
-echo "  观澜量化系统 部署脚本"
+echo "  Guanlan Quant System - Deploy"
 echo "  APP_DIR: $APP_DIR"
 echo "========================================"
 
-# ── 1. 拉取最新代码 ──
+# Step 1: Pull latest code
 cd "$APP_DIR"
 if [ -d .git ]; then
-  echo "[1/5] 拉取最新代码..."
+  echo "[1/5] Pulling latest code..."
   git pull
-else
-  echo "[1/5] 克隆仓库..."
+elif [ -z "$(ls -A . 2>/dev/null)" ]; then
+  echo "[1/5] Cloning repository..."
   git clone git@github.com:shipitswq/guanlan_03.git .
+else
+  echo "[1/5] Non-empty dir without .git, cloning to temp then copying..."
+  cd /tmp && git clone git@github.com:shipitswq/guanlan_03.git deploy_tmp
+  cd "$APP_DIR"
+  cp -a /tmp/deploy_tmp/. "$APP_DIR/"
+  rm -rf /tmp/deploy_tmp
 fi
 
-# ── 2. 后端依赖 ──
-echo "[2/5] 安装后端依赖..."
+# Step 2: Backend dependencies
+echo "[2/5] Installing backend dependencies..."
 cd "$APP_DIR/backend"
 if [ ! -d "venv" ]; then
   $PYTHON -m venv venv
 fi
 source venv/bin/activate
-pip install --upgrade pip -q
-pip install -r requirements.txt -q
+python -m pip install --upgrade pip -q
+python -m pip install -r requirements.txt -q
 deactivate
 
-# ── 3. 前端构建 ──
-echo "[3/5] 安装前端依赖并构建..."
+# Step 3: Build frontend
+echo "[3/5] Installing frontend dependencies and building..."
 cd "$APP_DIR/frontend"
 if ! command -v node &>/dev/null; then
-  echo "  -> 安装 Node.js..."
+  echo "  -> Installing Node.js..."
   curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash -
   sudo apt-get install -y nodejs
 fi
 npm install --silent
 npm run build
 
-# ── 4. 安装系统服务 ──
-echo "[4/5] 注册 systemd 服务..."
+# Step 4: Register systemd service
+echo "[4/5] Registering systemd service..."
 sudo tee /etc/systemd/system/$APP_NAME.service > /dev/null <<EOF
 [Unit]
-Description=观澜量化系统
+Description=Guanlan Quant System
 After=network.target
 
 [Service]
@@ -69,19 +73,19 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl enable $APP_NAME
 
-# ── 5. 启动 ──
-echo "[5/5] 启动服务..."
+# Step 5: Start service
+echo "[5/5] Starting service..."
 sudo systemctl restart $APP_NAME
 
-# ── 检查 ──
+# Check
 sleep 3
 if sudo systemctl is-active --quiet $APP_NAME; then
   echo ""
   echo "========================================"
-  echo "  ✅ 部署成功！"
-  echo "  访问: http://$(curl -s ifconfig.me):8000"
-  echo "  查看日志: sudo journalctl -u $APP_NAME -f"
+  echo "  Deploy successful!"
+  echo "  Visit: http://$(curl -s ifconfig.me):8000"
+  echo "  Logs: sudo journalctl -u $APP_NAME -f"
   echo "========================================"
 else
-  echo "  ❌ 服务启动失败，查看日志: sudo journalctl -u $APP_NAME -e"
+  echo "  Service failed to start. Check: sudo journalctl -u $APP_NAME -e"
 fi
