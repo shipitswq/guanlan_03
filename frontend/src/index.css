@@ -1,0 +1,103 @@
+/* ── Claude 风格全局样式 ── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #f5f4ed;
+  color: #141413;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1cfc5;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b0aea5;
+}
+
+/* Ant Design 默认样式覆盖 */
+.ant-layout {
+  background: #f5f4ed !important;
+}
+
+.ant-layout-sider {
+  box-shadow: none !important;
+}
+
+.ant-card {
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02) !important;
+  border: 1px solid #e8e6dc !important;
+  border-radius: 10px !important;
+}
+
+.ant-card-head {
+  border-bottom: 1px solid #f0eee6 !important;
+  padding: 0 20px !important;
+}
+
+.ant-card-body {
+  padding: 20px !important;
+}
+
+.ant-table-wrapper .ant-table-thead > tr > th {
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  text-transform: none !important;
+  letter-spacing: 0.02em;
+}
+
+.ant-table-wrapper .ant-table-tbody > tr > td {
+  font-size: 13px !important;
+}
+
+.ant-menu-item-selected {
+  font-weight: 500 !important;
+}
+
+.ant-tag {
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 500 !important;
+}
+
+.ant-btn {
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+}
+
+.ant-tabs-tab {
+  font-size: 14px !important;
+}
+
+.ant-statistic-title {
+  font-size: 12px !important;
+  color: #87867f !important;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: Georgia, 'Times New Roman', serif !important;
+  letter-spacing: -0.01em;
+}
