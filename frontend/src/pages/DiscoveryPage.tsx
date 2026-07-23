@@ -12,12 +12,8 @@ export default function DiscoveryPage() {
   const [form] = Form.useForm()
   const [scanning, setScanning] = useState(false)
   const [scanProgress, setScanProgress] = useState({ total: 0, scanned: 0 })
-  const [results, setResults] = useState<any[]>(() => {
-    try { return JSON.parse(localStorage.getItem('discovery_results') || '[]') } catch { return [] }
-  })
-  const [count, setCount] = useState(() => {
-    try { return Number(localStorage.getItem('discovery_count') || '0') } catch { return 0 }
-  })
+  const [results, setResults] = useState<any[]>([])
+  const [count, setCount] = useState(0)
   const [klineModal, setKlineModal] = useState<any>(null)
   const [klineData, setKlineData] = useState<any[]>([])
   const [klineLoading, setKlineLoading] = useState(false)
@@ -27,6 +23,14 @@ export default function DiscoveryPage() {
     fetch('http://localhost:8000/api/strategies/builtin')
       .then(r => r.json()).then(r => setBuiltin(r.strategies || []))
       .catch(() => {})
+    // 恢复上次扫描结果
+    try {
+      const saved = localStorage.getItem('discovery_results')
+      if (saved) {
+        setResults(JSON.parse(saved))
+        setCount(Number(localStorage.getItem('discovery_count') || '0'))
+      }
+    } catch {}
   }, [])
 
   const handleScan = async () => {
