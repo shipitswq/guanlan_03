@@ -70,7 +70,7 @@ export default function AppLayout() {
             fontSize: 16,
             fontWeight: 600,
             letterSpacing: 0.3,
-          }}>量化交易</span>
+          }}>观澜</span>
         </div>
 
         <Menu
@@ -96,7 +96,7 @@ export default function AppLayout() {
           fontSize: 11,
           color: '#5e5d59',
         }}>
-          通达信数据源 · v1.0
+          v1.0 · © 2026 观澜
         </div>
       </Sider>
 
